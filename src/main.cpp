@@ -1,7 +1,8 @@
 #include "game_loop.hpp"
 
-int main() {
+int main()
+{
 	GameLoop loop;
-	loop.helloWorld();
+	loop.init();
 	return 0;
 }

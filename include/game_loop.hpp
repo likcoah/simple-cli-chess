@@ -1,6 +1,11 @@
 #pragma once
 
-class GameLoop {
-public:
-	void helloWorld();
+#include <string>
+
+
+class GameLoop
+{
+	public:
+		void init();
+		void mainMenu(std::string &menu_template);
 };
