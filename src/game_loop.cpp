@@ -1,20 +1,14 @@
 #include "game_loop.hpp"
+#include "utils.hpp"
 
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
+#include <filesystem>
 
 
 void GameLoop::init()
 {
-	std::ifstream file("assets/ui/main_menu.txt");
-	if (!file.is_open()) return;
-	std::stringstream buffer;
-	buffer << file.rdbuf();
-	std::string MAIN_MENU_TEMPLATE = buffer.str();
-	file.close();
-	
+	std::string MAIN_MENU_TEMPLATE = Utils::read_file("assets/ui/main_menu.txt");
 	while (true) {
 		mainMenu(MAIN_MENU_TEMPLATE);
 	}
