@@ -11,6 +11,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 
 include_directories(include)
 
-file(GLOB_RECURSE SOURCES "src/*.cpp")
+set(SOURCES
+	src/main.cpp
+	src/game_loop.cpp
+)
 
 add_executable(chess ${SOURCES})
