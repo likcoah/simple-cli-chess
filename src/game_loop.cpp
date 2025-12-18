@@ -28,7 +28,6 @@ void GameLoop::mainMenu(std::string &menu_template)
 		if (symbol == '@' || symbol == '$') std::cout << ' ';
 		else std::cout << symbol;
 	}
-	// int user_choice;
 	std::cout << "\033[2;3mEnter the number of the option you choice" <<
 		std::endl << "Or enter q/quit/exit to exit here: \033[0m";
 	std::string input;
