@@ -5,6 +5,6 @@ int main(int argc, char *argv[])
 {
 	SourceDir::setSourceDir(argv[0]);
 	GameLoop loop;
-	loop.init();
+	loop.loop();
 	return 0;
 }

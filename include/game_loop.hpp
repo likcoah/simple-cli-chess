@@ -6,6 +6,6 @@
 class GameLoop
 {
 	public:
-		void init();
-		void mainMenu(std::string &menu_template);
+		void loop();
+		int mainMenu(std::string &menu_template);
 };

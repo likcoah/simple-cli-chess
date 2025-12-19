@@ -6,16 +6,28 @@
 #include <filesystem>
 
 
-void GameLoop::init()
+enum Actions {
+	NOTHING = 0,
+	EXIT = 1
+};
+
+void GameLoop::loop()
 {
 	std::string MAIN_MENU_TEMPLATE = Utils::read_file("assets/ui/main_menu.txt");
-	while (true) {
-		mainMenu(MAIN_MENU_TEMPLATE);
+	bool is_alive = true;
+	while (is_alive) {
+		switch (mainMenu(MAIN_MENU_TEMPLATE)) {
+			case Actions::EXIT:
+				is_alive = false;
+				break;
+			case Actions::NOTHING:
+				break;
+		}
 	}
 }
 
 
-void GameLoop::mainMenu(std::string &menu_template)
+int GameLoop::mainMenu(std::string &menu_template)
 {
 	std::cout << "\033c";
 	for (char symbol : menu_template) {
@@ -34,7 +46,8 @@ void GameLoop::mainMenu(std::string &menu_template)
 			std::cin.get();
 		}
 	} catch (...) {
-		if (input == "q" || input == "quit" || input == "exit") exit(0);
+		if (input == "q" || input == "quit" || input == "exit") return Actions::EXIT;
 	}
+	return Actions::NOTHING;
 }
 
