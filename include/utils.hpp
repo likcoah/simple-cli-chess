@@ -6,5 +6,5 @@
 class Utils
 {
 	public:
-		static std::string read_file(const std::filesystem::path &relative_file_path);
+		static std::string readFile(const std::filesystem::path &relative_file_path);
 };

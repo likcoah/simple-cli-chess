@@ -13,7 +13,7 @@ enum Actions {
 
 void GameLoop::loop()
 {
-	std::string MAIN_MENU_TEMPLATE = Utils::read_file("assets/ui/main_menu.txt");
+	std::string MAIN_MENU_TEMPLATE = Utils::readFile("assets/ui/main_menu.txt");
 	bool is_alive = true;
 	while (is_alive) {
 		switch (mainMenu(MAIN_MENU_TEMPLATE)) {

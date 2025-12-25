@@ -9,7 +9,7 @@
 #include <sstream>
 
 
-std::string Utils::read_file(const std::filesystem::path &relative_file_path)
+std::string Utils::readFile(const std::filesystem::path &relative_file_path)
 {
 	std::filesystem::path source_dir = SourceDir::getSourceDir();
 	std::filesystem::path file_path = source_dir / relative_file_path;
