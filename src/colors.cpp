@@ -23,14 +23,14 @@ struct StyleConfig
 		{"black_piece", "red"}
 	};
 	stylemap colors = {
-		{"black", "0;"},
-		{"red", "1;"},
-		{"green", "2;"},
-		{"yellow", "3;"},
-		{"blue", "4;"},
-		{"purple", "5;"},
-		{"cyan", "6;"},
-		{"white", "7;"}
+		{"black", "0"},
+		{"red", "1"},
+		{"green", "2"},
+		{"yellow", "3"},
+		{"blue", "4"},
+		{"purple", "5"},
+		{"cyan", "6"},
+		{"white", "7"}
 	};
 	stylemap styles = {
 		{"bold", "1;"},
@@ -54,7 +54,7 @@ struct StyleConfig
 
 
 
-	static bool existsWithContent(const std::filesystem::path file_path)
+	static bool existsWithContent(const std::filesystem::path &file_path)
 	{
 		return std::filesystem::exists(file_path) &&
 			!std::filesystem::is_empty(file_path);
@@ -65,7 +65,7 @@ struct StyleConfig
 	void initStyleConfig()
 	{
 		const std::filesystem::path source_dir = SourceDir::getSourceDir(),
-			  options_path = source_dir / "res/options.txt";
+			  options_path = source_dir / "res" / (name + ".txt");
 
 		if (!existsWithContent(options_path)) return;
 
@@ -84,8 +84,8 @@ struct StyleConfig
 
 
 
-		const std::filesystem::path format_path = source_dir / ("res/themes/" + name + ".txt"),
-			colors_path = source_dir / ("res/themes/colors/" + name + ".txt");
+		const std::filesystem::path format_path = source_dir / "res" / "themes" / (name + ".txt"),
+			colors_path = source_dir / "res" / "themes" / "colors" / (name + ".txt");
 
 		if (!existsWithContent(format_path)) { reset(); return; }
 
@@ -101,7 +101,7 @@ struct StyleConfig
 
 		if (std::ifstream colors_data(colors_path); colors_data) {
 			for (std::string name, r, g, b; colors_data >> name >> r >> g >> b; ) {
-				colors[name] = "38;2;" + r + ";" + g + ";" + b + ";";
+				colors[name] = "38;2;" + r + ";" + g + ";" + b;
 			}
 		} else { reset(&StyleConfig::colors); return; }
 	}
