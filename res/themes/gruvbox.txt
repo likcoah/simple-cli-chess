@@ -1,0 +1,14 @@
+bg	background      black
+fh	foreground      white
+
+bg	square_light    white
+bg	square_dark     very_black
+bg	last_move       cyan
+bg	check           orange
+
+fg	white_piece     blue
+fg	black_piece     red
+
+fg	success			green
+fg	error			red
+fg	alternate		blue
