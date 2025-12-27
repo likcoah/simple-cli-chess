@@ -12,6 +12,7 @@
 !res/**/*.txt
 !src/*.cpp
 !include/*.hpp
+!vhs/*.gif
 
 !/CMakeLists.txt
 !/.gitignore
