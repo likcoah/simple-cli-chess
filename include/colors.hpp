@@ -6,5 +6,5 @@
 class Colors
 {
 	public:
-		static std::string color(std::string style_tags);
+		static std::string color(std::string style_tag);
 };

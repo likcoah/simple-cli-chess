@@ -1,8 +1,10 @@
 #include "colors.hpp"
 #include "source_dir.hpp"
 
+#include <stdexcept>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <filesystem>
 #include <unordered_map>
 
@@ -20,7 +22,10 @@ struct StyleConfig
 		{"last_move", "cyan"},
 		{"check", "green"},
 		{"white_piece", "blue"},
-		{"black_piece", "red"}
+		{"black_piece", "red"},
+		{"success", "green"},
+		{"error", "red"},
+		{"alternate", "blue"}
 	};
 	stylemap colors = {
 		{"black", "0"},
@@ -33,12 +38,25 @@ struct StyleConfig
 		{"white", "7"}
 	};
 	stylemap styles = {
-		{"bold", "1;"},
-		{"dim", "2;"},
-		{"italic", "3;"},
-		{"underline", "4;"},
-		{"inverse", "7;"},
-		{"strikethrough", "8;"},
+		{"bold", "1"},
+		{"dim", "2"},
+		{"italic", "3"},
+		{"underline", "4"},
+		{"inverse", "7"},
+		{"strikethrough", "8"},
+	};
+	stylemap layers = {
+		{"background", "bg"},
+		{"foreground", "fg"},
+		{"square_light", "bg"},
+		{"square_dark", "bg"},
+		{"last_move", "bg"},
+		{"check", "bg"},
+		{"white_piece", "fg"},
+		{"black_piece", "fg"},
+		{"success", "fg"},
+		{"error", "fg"},
+		{"alternate", "fg"}
 	};
 
 
@@ -61,11 +79,20 @@ struct StyleConfig
 	}
 
 
+	static std::string colorLayerConvert(std::string color_layer) {
+		if (color_layer == "bg") return "4";
+		else if (color_layer == "fg") return "3";
+		else throw std::invalid_argument("invalid color layer");
+	}
+
 
 	void initStyleConfig()
 	{
+		static bool initialized = false;
+		if (initialized) return;
+
 		const std::filesystem::path source_dir = SourceDir::getSourceDir(),
-			  options_path = source_dir / "res" / (name + ".txt");
+			  options_path = source_dir / "res" / "options.txt";
 
 		if (!existsWithContent(options_path)) return;
 
@@ -90,29 +117,54 @@ struct StyleConfig
 		if (!existsWithContent(format_path)) { reset(); return; }
 
 		if (std::ifstream format_data(format_path); format_data) {
-			for (std::string name, value; format_data >> name >> value; ) {
-				format[name] = value;
+			for (std::string layer, format_name, value; format_data >> layer >> format_name >> value; ) {
+				format[format_name] = value;
+				layers[format_name] = layer;
 			}
 		} else { reset(); return; }
 		
 
 
 		if (!existsWithContent(colors_path)) { reset(&StyleConfig::colors); return; }
-
-		if (std::ifstream colors_data(colors_path); colors_data) {
-			for (std::string name, r, g, b; colors_data >> name >> r >> g >> b; ) {
-				colors[name] = "38;2;" + r + ";" + g + ";" + b;
+		else if (std::ifstream colors_data(colors_path); colors_data) {
+			for (std::string color_name, r, g, b; colors_data >> color_name >> r >> g >> b; ) {
+				colors[color_name] = "8;2;" + r + ";" + g + ";" + b;
 			}
-		} else { reset(&StyleConfig::colors); return; }
+		} else reset(&StyleConfig::colors);
+
+		initialized = true;
 	}
 };
 
 
 std::string Colors::color(std::string style_tags)
 {
+	if (style_tags == "reset") return "\033[0m";
+
+
 	static StyleConfig config;
 	config.initStyleConfig();
 
-	return "";
+
+	std::string styles, colors;
+
+	if (std::stringstream style_tags_stream(style_tags); style_tags_stream) {
+		for (std::string tag; style_tags_stream >> tag; ) {
+			if (auto iter_style = config.styles.find(tag); iter_style != config.styles.end()) {
+				styles += iter_style->second + ";";
+			} else if (auto iter_format = config.format.find(tag); iter_format != config.format.end()) {
+				if (auto iter_color = config.colors.find(iter_format->second); iter_color != config.colors.end()) {
+					colors += StyleConfig::colorLayerConvert(config.layers[iter_format->first]) + iter_color->second + ";";
+				}
+			} else throw std::invalid_argument("invalid style tag");
+		}
+	}
+
+	
+	std::string result;
+	result += styles += colors;
+	if (!result.empty()) result.pop_back();
+	else throw std::invalid_argument("invalid style tag");
+	return "\033[" + result + "m";
 }
 

@@ -1,5 +1,6 @@
 #include "game_loop.hpp"
 #include "utils.hpp"
+#include "colors.hpp"
 
 #include <iostream>
 #include <string>
@@ -29,21 +30,23 @@ void GameLoop::loop()
 
 int GameLoop::mainMenu(std::string &menu_template)
 {
-	std::cout << "\033c";
+	std::cout << "\033c" << Colors::color("background");
 	for (char symbol : menu_template) {
 		if (symbol == '@' || symbol == '$') std::cout << ' ';
 		else std::cout << symbol;
 	}
-	std::cout << "\033[2;3mEnter the number of the option you choice" <<
-		std::endl << "Or enter q/quit/exit to exit here: \033[0m";
+	std::cout << Colors::color("reset");
+	std::cout << Colors::color("italic dim") << "Enter the number of the option you choice" <<
+		std::endl << "Or enter q/quit/exit to exit here: " << Colors::color("reset");
 	std::string input;
 	std::getline(std::cin, input);
 	try {
 		int user_choice = std::stoi(input);
 		if (user_choice > 0 && user_choice <= 3) {
-			std::cout << "\033[1;34mComing soon\033[0m" <<
-				std::endl << "\033[2;3mPress Enter to return... ";
-			std::cin.get();
+			std::cout << Colors::color("bold alternate") << "Coming soon" << Colors::color("reset") << std::endl <<
+				 Colors::color("italic dim") << "Press Enter to return... " << Colors::color("reset");
+			std::string dummy;
+			std::getline(std::cin, dummy);
 		}
 	} catch (...) {
 		if (input == "q" || input == "quit" || input == "exit") return Actions::EXIT;
