@@ -6,7 +6,7 @@
 |                                 |
 |             @PLAY:$             |
 |         @1. In person$          |
-|       @2. With stokfish$        |
+|       @2. With Stockfish$       |
 |          @3. Online$            |
 |                                 |
 |                                 |

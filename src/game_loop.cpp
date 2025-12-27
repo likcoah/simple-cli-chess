@@ -30,7 +30,7 @@ void GameLoop::loop()
 
 int GameLoop::mainMenu(std::string &menu_template)
 {
-	std::cout << "\033c" << Colors::color("background");
+	std::cout << "\033c";
 	for (char symbol : menu_template) {
 		if (symbol == '@' || symbol == '$') std::cout << ' ';
 		else std::cout << symbol;
