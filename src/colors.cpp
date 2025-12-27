@@ -79,7 +79,7 @@ struct StyleConfig
 	}
 
 
-	static std::string colorLayerConvert(std::string color_layer) {
+	static std::string colorLayerConvert(const std::string &color_layer) {
 		if (color_layer == "bg") return "4";
 		else if (color_layer == "fg") return "3";
 		else throw std::invalid_argument("invalid color layer");
@@ -162,7 +162,7 @@ std::string Colors::color(std::string style_tags)
 
 	
 	std::string result;
-	result += styles += colors;
+	result += styles + colors;
 	if (!result.empty()) result.pop_back();
 	else throw std::invalid_argument("invalid style tag");
 	return "\033[" + result + "m";
