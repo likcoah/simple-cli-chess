@@ -1,1 +1,1 @@
-THEME	gruvbox
+THEME	default
