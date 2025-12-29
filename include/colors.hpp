@@ -3,8 +3,7 @@
 #include <string>
 
 
-class Colors
+namespace Colors
 {
-	public:
-		static std::string color(std::string style_tag);
+	std::string color(std::string style_tag);
 };

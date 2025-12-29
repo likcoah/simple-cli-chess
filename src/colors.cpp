@@ -137,34 +137,37 @@ struct StyleConfig
 };
 
 
-std::string Colors::color(std::string style_tags)
+namespace Colors
 {
-	if (style_tags == "reset") return "\033[0m";
-
-
-	static StyleConfig config;
-	config.initStyleConfig();
-
-
-	std::string styles, colors;
-
-	if (std::stringstream style_tags_stream(style_tags); style_tags_stream) {
-		for (std::string tag; style_tags_stream >> tag; ) {
-			if (auto iter_style = config.styles.find(tag); iter_style != config.styles.end()) {
-				styles += iter_style->second + ";";
-			} else if (auto iter_format = config.format.find(tag); iter_format != config.format.end()) {
-				if (auto iter_color = config.colors.find(iter_format->second); iter_color != config.colors.end()) {
-					colors += StyleConfig::colorLayerConvert(config.layers[iter_format->first]) + iter_color->second + ";";
-				}
-			} else throw std::invalid_argument("invalid style tag");
-		}
-	}
-
+	std::string color(std::string style_tags)
+	{
+		if (style_tags == "reset") return "\033[0m";
 	
-	std::string result;
-	result += styles + colors;
-	if (!result.empty()) result.pop_back();
-	else throw std::invalid_argument("invalid style tag");
-	return "\033[" + result + "m";
+	
+		static StyleConfig config;
+		config.initStyleConfig();
+	
+	
+		std::string styles, colors;
+	
+		if (std::stringstream style_tags_stream(style_tags); style_tags_stream) {
+			for (std::string tag; style_tags_stream >> tag; ) {
+				if (auto iter_style = config.styles.find(tag); iter_style != config.styles.end()) {
+					styles += iter_style->second + ";";
+				} else if (auto iter_format = config.format.find(tag); iter_format != config.format.end()) {
+					if (auto iter_color = config.colors.find(iter_format->second); iter_color != config.colors.end()) {
+						colors += StyleConfig::colorLayerConvert(config.layers[iter_format->first]) + iter_color->second + ";";
+					}
+				} else throw std::invalid_argument("invalid style tag");
+			}
+		}
+	
+		
+		std::string result;
+		result += styles + colors;
+		if (!result.empty()) result.pop_back();
+		else throw std::invalid_argument("invalid style tag");
+		return "\033[" + result + "m";
+	}
 }
 
