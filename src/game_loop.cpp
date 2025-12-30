@@ -1,11 +1,14 @@
 #include "game_loop.hpp"
-#include "utils.hpp"
 #include "colors.hpp"
+#include "source_dir.hpp"
+#include "render.hpp"
 
 #include <iostream>
 #include <string>
 #include <filesystem>
 
+
+const std::filesystem::path source_dir = SourceDir::getSourceDir();
 
 enum Actions {
 	NOTHING = 0,
@@ -14,10 +17,9 @@ enum Actions {
 
 void GameLoop::loop()
 {
-	std::string MAIN_MENU_TEMPLATE = Utils::readFile("assets/ui/main_menu.txt");
 	bool is_alive = true;
 	while (is_alive) {
-		switch (mainMenu(MAIN_MENU_TEMPLATE)) {
+		switch (mainMenu()) {
 			case Actions::EXIT:
 				is_alive = false;
 				break;
@@ -28,14 +30,12 @@ void GameLoop::loop()
 }
 
 
-int GameLoop::mainMenu(std::string &menu_template)
+int GameLoop::mainMenu()
 {
-	std::cout << "\033c";
-	for (char symbol : menu_template) {
-		if (symbol == '@' || symbol == '$') std::cout << ' ';
-		else std::cout << symbol;
-	}
-	std::cout << Colors::color("reset");
+	render((source_dir / "assets" / "ui" / "main_menu.txt"),
+			{{'@', Colors::color("bold")},
+			{'$', Colors::color("reset")}});
+
 	std::cout << Colors::color("italic dim") << "Enter the number of the option you choice" <<
 		std::endl << "Or enter q/quit/exit to exit here: " << Colors::color("reset");
 	std::string input;

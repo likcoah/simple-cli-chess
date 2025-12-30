@@ -14,9 +14,9 @@ include_directories(include)
 set(SOURCES
 	src/main.cpp
 	src/game_loop.cpp
-	src/utils.cpp
 	src/source_dir.cpp
 	src/colors.cpp
+	src/render.cpp
 )
 
 file(COPY ${CMAKE_SOURCE_DIR}/assets DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

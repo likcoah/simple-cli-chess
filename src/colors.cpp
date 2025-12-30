@@ -142,6 +142,7 @@ namespace Colors
 	std::string color(std::string style_tags)
 	{
 		if (style_tags == "reset") return "\033[0m";
+		else if (style_tags == "clear") return "\033[2J\033[1;1H";
 	
 	
 		static StyleConfig config;
